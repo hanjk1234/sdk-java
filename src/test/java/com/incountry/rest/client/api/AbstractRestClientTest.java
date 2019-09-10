@@ -19,6 +19,7 @@ public class AbstractRestClientTest {
     @Test
     public void testGet() throws IOException {
         HttpTransport transportMock = new MockHttpTransport() {
+            @Override
             public LowLevelHttpRequest buildRequest(String method, String url) throws IOException {
                 return new MockLowLevelHttpRequest() {
                     @Override
@@ -34,12 +35,14 @@ public class AbstractRestClientTest {
             }
         };
 
-        AbstractRestClient testObj = new AbstractRestClient(transportMock) {
-        };
+        MidPopData data;
+        try (AbstractRestClient testObj = new AbstractRestClient(transportMock) {
+        }) {
 
-        MidPopData data = testObj.getAndParse("https://us.api.incountry.io/v2/storage/records/us/201e5a2194145a780aeef762deea82aa",
-                new TypeToken<MidPopData>() {
-                }.getType(), null, null);
+            data = testObj.getAndParse("https://us.api.incountry.io/v2/storage/records/us/201e5a2194145a780aeef762deea82aa",
+                    new TypeToken<MidPopData>() {
+                    }.getType(), null, null);
+        }
 
         Assert.assertTrue(MidPopData.builder().setCountry("us").setProfileKey("pf-key").setBody("body")
                 .setKey("key").setKey2("key2").setKey3("key3").setRangeKey("rk").build().equals(data));

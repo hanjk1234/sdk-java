@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public abstract class AbstractJsonMapper implements IJsonMapper<String, Object> {
-    abstract protected ObjectMapper getObjectMapper();
+    protected abstract ObjectMapper getObjectMapper();
 
     @Override
     public String map(boolean pretty, boolean printClassName, Object obj) {

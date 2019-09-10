@@ -19,6 +19,7 @@ public class JsonParser implements IJsonParser {
     }
 
     @Override
+    @SuppressWarnings("squid:RedundantThrowsDeclarationCheck")
     public <T> T readValue(String content, Class<T> valueType) throws IOException, JsonParseException, JsonMappingException {
         return getObjectMapper().readValue(content, valueType);
     }

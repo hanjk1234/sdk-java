@@ -1,6 +1,9 @@
 package com.incountry.rest.client.api;
 
-import com.google.api.client.http.*;
+import com.google.api.client.http.GenericUrl;
+import com.google.api.client.http.HttpRequest;
+import com.google.api.client.http.HttpRequestFactory;
+import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.apache.v2.ApacheHttpTransport;
 import com.google.api.client.http.json.JsonHttpContent;
 import com.google.api.client.json.JsonFactory;
@@ -24,12 +27,7 @@ public abstract class AbstractRestClient implements Closeable {
 
     public AbstractRestClient(HttpTransport httpTransport) {
         this.httpTransport = httpTransport;
-        requestFactory = httpTransport.createRequestFactory(new HttpRequestInitializer() {
-            @Override
-            public void initialize(HttpRequest request) {
-                request.setParser(new JsonObjectParser(JSON_FACTORY));
-            }
-        });
+        requestFactory = httpTransport.createRequestFactory(request -> request.setParser(new JsonObjectParser(JSON_FACTORY)));
     }
 
     @Override
@@ -46,6 +44,7 @@ public abstract class AbstractRestClient implements Closeable {
 
     protected <T> T postAndParse(String url, Type type, Map<String, String> headers, Map<String, String> params, Object dto) throws IOException {
         HttpRequest request = requestFactory.buildPostRequest(assembleUrl(url, params), new JsonHttpContent(JSON_FACTORY, dto));
+        updateRequestWithHeaders(request, headers);
         return (T) request.execute().parseAs(type);
     }
 
@@ -57,9 +56,8 @@ public abstract class AbstractRestClient implements Closeable {
     protected GenericUrl assembleUrl(String url, Map<String, String> params) {
         GenericUrl gUrl = new GenericUrl(url);
         if (params != null && !params.isEmpty()) {
-            params.forEach((k, v) -> gUrl.put(k, v));
+            gUrl.putAll(params);
         }
         return gUrl;
     }
-
 }
