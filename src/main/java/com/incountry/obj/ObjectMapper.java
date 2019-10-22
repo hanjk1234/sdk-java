@@ -1,5 +1,5 @@
 package com.incountry.obj;
 
-public interface IObjectMapper<R, S> {
+public interface ObjectMapper<R, S> {
     R map(S obj);
 }
