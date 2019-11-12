@@ -34,6 +34,9 @@ jq -r '.default
         | .key + .value.version' \
     Pipfile.lock > requirements.txt
 
+echo "Generating BOM..."
+gradle cyclonedxBom
+
 echo "Adding BOM for PROJECT with ID ${PROJECT_ID}..."
 
 printf "{ \"project\": \"${PROJECT_ID}\", \"bom\": \"" > payload.json
