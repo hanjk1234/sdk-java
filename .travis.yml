@@ -15,7 +15,7 @@ notifications:
 
 script:
   - gradle sonarqube
-  - if [[ $TRAVIS_BRANCH =~ ^master|^RC_.*|^SB_.*|DEVOPS-718.* ]]; then ./dependencytrack_upload.sh $DEPTRACK_API $DEPTRACK_URL $DEPTRACK_PROJECT-$TRAVIS_BRANCH; fi
+  - if [[ $TRAVIS_BRANCH =~ ^master|^RC_.*|^SB_.* ]]; then ./dependencytrack_upload.sh $DEPTRACK_API $DEPTRACK_URL $DEPTRACK_PROJECT-$TRAVIS_BRANCH; fi
 
 env:
   global:
