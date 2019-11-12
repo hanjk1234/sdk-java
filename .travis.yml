@@ -15,3 +15,12 @@ notifications:
 
 script:
   - gradle sonarqube
+  - gradle cyclonedxBom
+  - if [[ $TRAVIS_BRANCH =~ ^master|^RC_.*|^SB_.*|DEVOPS-718.* ]]; then ./dependencytrack_upload.sh $DEPTRACK_API $DEPTRACK_URL $DEPTRACK_PROJECT-$TRAVIS_BRANCH; fi
+
+env:
+  global:
+    - DEPTRACK_URL='https://dependency.tools.incountry.com'
+    - DEPTRACK_PROJECT="proxy"
+# DEPTRACK_API
+    - secure: "AZnJUi5oPPioZjW9Eh6ln+lAEtK8tLMI0e9cOV9F3tjM9Umd1FPj2S7ODeJYyYD9fxWPBVySke1LQR4hshaTSSY76NurXM9vu1NMPjhwFyGD+DLBsc2FxkELOSLPRcfWnKtw0EAYnCtXNbWBxLNCra0WXqxKnymsaVelsxv2d3RWwQXFeFZTAZXFzuhk/JTOQGjSFMPvk0J0TPm+brt6qCzFhT/ZcGwGGX3rQ6bD8DxNcDI3EPUAiFSCIcxSxfk1bqeJLqtfOgJyAvmpgahw1mmoLIyQhQ+t4/LPnfDWL2RIUQC2PmngttC3QozNOH89NTUhSa06Qh3sDIwQ6UTi1UYVmO2mKbBXecNrlIyfglikfX2bER6uGS9mLVTIhXVZI2CnZXePQSS9Ad4To0mVL4kCMAF4Qwz5PebF4Q/OKZBzM/FleHJk5VBVi/DvOZxjk4DpHc/wpVZnUt7qzAKMlisUahpnb3gc1kLKh2/IQSmadnTuTukQY8rgTN/t2xZRBpo7sNFuWWYKP4m8EEGzvQSkxA8iK58GZlAdFlqZtaMlUkWNGttLfRqLyOFP/EHkHYGQ7H4nUenjgVISq3X1hN/Yr6c/Fvv78BVVejImfpBE+lBrM0woDmyabZyXnRkuiOfMTil7sCBHlApJ0DKFArs9O8Rtt2bUi2NOleBq1nM="
